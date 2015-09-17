@@ -53,6 +53,10 @@
 	
 	__webpack_require__(/*! ./controllers/home */ 3);
 	
+	__webpack_require__(/*! ./controllers/users */ 4);
+	
+	__webpack_require__(/*! ./models/userFactory */ 5);
+	
 	__webpack_require__(/*! ./config */ 2);
 
 /***/ },
@@ -77,7 +81,7 @@
 	
 	app.config(function ($stateProvider, $urlRouterProvider) {
 	  $urlRouterProvider.otherwise('/');
-	  $stateProvider.state('home', { url: '/', templateUrl: 'src/views/home.html', controller: 'homeCtrl' }).state('about', { url: '/about', templateUrl: 'src/views/about.html' });
+	  $stateProvider.state('home', { url: '/', templateUrl: 'src/views/home.html', controller: 'homeCtrl' }).state('about', { url: '/about', templateUrl: 'src/views/about.html' }).state('users', { abstract: true, templateUrl: 'src/views/users/users.html' }).state('users.login', { url: '/login', templateUrl: 'src/views/users/users.login.html', controller: 'usersCtrl' }).state('users.register', { url: '/register', templateUrl: 'src/views/users/users.register.html', controller: 'usersCtrl' });
 	});
 
 /***/ },
@@ -89,8 +93,49 @@
 
 	'use strict';
 	
-	app.controller('homeCtrl', function () {
+	app.controller('homeCtrl', function ($scope, $state) {
 	  console.log('home loaded');
+	
+	  $scope.aboutClicked = function () {
+	
+	    console.log('current state:', $state.current.name);
+	    // $state.go('about');
+	  };
+	});
+
+/***/ },
+/* 4 */
+/*!**********************************!*\
+  !*** ./src/controllers/users.js ***!
+  \**********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	app.controller('usersCtrl', function ($scope, $state) {
+	  $scope.currentState = $state.current.name.toUpperCase();
+	});
+
+/***/ },
+/* 5 */
+/*!***********************************!*\
+  !*** ./src/models/userFactory.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	app.factory('User', function () {
+	  var User = function User() {};
+	
+	  User.login = function (user) {
+	    console.log('user login!', user);
+	  };
+	  User.register = function (user) {
+	    console.log('user registered!', user);
+	  };
+	
+	  return User;
 	});
 
 /***/ }
